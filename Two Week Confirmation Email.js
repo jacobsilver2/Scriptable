@@ -13,10 +13,12 @@ let endDate = new Date();
 endDate.setDate(endDate.getDate() + 15)
 endDate.setHours(0,0,0,0);
 // get the booking calendar
-let cal = await Calendar.forEventsByTitle("Booking")
+let booking = await Calendar.forEventsByTitle("Booking")
+let early = await Calendar.forEventsByTitle("EarlyEvent")
+
 
 // get every event from the booking calendar which occurs between the start date and end date
-let events = await CalendarEvent.between(startDate, endDate, [cal])
+let events = await CalendarEvent.between(startDate, endDate, [early, booking])
 
 // collection of email addresses
 let emails = []
@@ -30,7 +32,9 @@ let options = {
 
 events.map(event => {
     // push the email address into the emails array
-    emails.push(event.notes);
+    if (event.notes) {
+      emails.push(event.notes);
+    }
     // format the time
     const formattedDate = event.startDate.toLocaleTimeString("en-us", options)
     // format the string

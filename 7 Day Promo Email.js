@@ -28,7 +28,9 @@ let options = {
 
 events.map(event => {
     // push the email address into the emails array
-    emails.push(event.notes);
+    if (event.notes) {
+      emails.push(event.notes);
+    }
 })
 
 let mail = new Mail();
